@@ -1,0 +1,9 @@
+version: 1
+water_ph:
+  url: http://localhost:8090/readings/water_ph
+water_temperature:
+  url: http://localhost:8090/readings/water_temperature
+events:
+  hostname: oooooliversi.eastus.cloudapp.azure.com
+  port: 9092
+  topic: events

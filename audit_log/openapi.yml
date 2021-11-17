@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  description: THis API provides audit info
+  version: "1.0.0"
+  title: Audit API
+  contact:
+    email: abc@gmail.com
+
+paths:
+  /water_temperature:
+    get:
+      summary: gets a water temperature reading from history
+      operationId: app.get_water_temperature_reading
+      description: Gets water temperature readings from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the WT at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a water temperature event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/WaterTemperatureReading'
+        '400' :
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /water_ph:
+    get:
+      summary: gets a water ph reading from history
+      operationId: app.get_water_ph_reading
+      description: Gets water ph reading from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the WP at the index evenstore
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a water ph event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/WaterPhReading'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+components:
+  schemas:
+    WaterTemperatureReading:
+      required:
+        - SwimminPool_id
+        - Device_id
+        - Water_temperature
+        - timestamp
+      properties:
+        SwimminPool_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        Device_id:
+          type: string
+          example: device1
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33Z'
+        Water_temperature:
+          type: integer
+          example: 32
+    WaterPhReading:
+      required:
+        - SwimminPool_id
+        - Device_id
+        - Water_ph
+        - timestamp
+      properties:
+        SwimminPool_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0852
+        Device_id:
+          type: string
+          example: device2
+        Water_ph:
+          type: integer
+          example: 7
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33Z'

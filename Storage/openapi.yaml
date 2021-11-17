@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from swimming pool detectors
+  version: "1.0.0"
+  title: reading API
+  contact:
+    email: abc@swiming.com
+
+tags:
+  - name: detectors
+    description: Operations available to swimming pool detectors
+paths:
+  /readings/water_temperature:
+#    post:
+#      tags:
+#        - detectors
+#      summary: reports a water temperature of swimming pool reading
+#      operationId: app.report_water_temperature_readings
+#      description:
+#        Adds a new water temperature reading to the system
+#      responses:
+#        '201':
+#          description: item created
+#        '400':
+#          description: 'invalid input, object invalid'
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/WaterTemperatureReading'
+#        description: Reading item to add
+    get:
+      tags:
+        - sensors
+      summary: get water temperature sensor reading
+      operationId: app.get_water_temperature_readings
+      description: Get a new water temperature reading to the system
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33Z
+      responses:
+        '200':
+          description: Return a project sucessfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WaterTemperatureReading'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /readings/water_ph:
+#    post:
+#      tags:
+#        - detectors
+#      summary: reports a ph value of swimming pool reading
+#      operationId: app.report_ph_value_readings
+#      description: Adds a new ph value reading to the system
+#      responses:
+#        '201':
+#          description: item created
+#        '400':
+#          description: 'invalid input, object invalid'
+#      requestBody:
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/WaterPhReading'
+#        description: Reading item to add
+
+    get:
+      tags:
+        - sensors
+      summary: get water ph reading
+      operationId: app.get_report_ph_value_readings
+      description: Get water ph reading to the system
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33Z
+      responses:
+        '200':
+          description: Return a reading sucessfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WaterPhReading'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+components:
+  schemas:
+    WaterTemperatureReading:
+      required:
+        - SwimminPool_id
+        - Device_id
+        - Water_temperature
+        - timestamp
+      properties:
+        SwimminPool_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        Device_id:
+          type: string
+          example: device1
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33Z'
+        Water_temperature:
+          type: integer
+          example: 32
+    WaterPhReading:
+      required:
+        - SwimminPool_id
+        - Device_id
+        - Water_ph
+        - timestamp
+      properties:
+        SwimminPool_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0852
+        Device_id:
+          type: string
+          example: device2
+        Water_ph:
+          type: integer
+          example: 7
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33Z'

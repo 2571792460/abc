@@ -1,0 +1,93 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from swimming pool detectors
+  version: "1.0.0"
+  title: reading API
+  contact:
+    email: abc@swiming.com
+
+tags:
+  - name: detectors
+    description: Operations available to swimming pool detectors
+paths:
+  /readings/water_temperature:
+    post:
+      tags:
+        - detectors
+      summary: reports a water temperature of swimming pool reading
+      operationId: app.report_water_temperature_reading
+      description: 
+        Adds a new water temperature reading to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaterTemperatureReading'
+        description: Reading item to add
+  /readings/water_ph:    
+    post:
+      tags:
+        - detectors
+      summary: reports a ph value of swimming pool reading
+      operationId: app.report_ph_value_reading
+      description: Adds a new ph value reading to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WaterPhReading'
+        description: Reading item to add
+components:
+  schemas:
+    WaterTemperatureReading:
+      required:
+        - SwimminPool_id
+        - Device_id
+        - Water_temperature
+        - timestamp
+      properties:
+        SwimminPool_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        Device_id:
+          type: string
+          example: device1
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+        Water_temperature:
+          type: number
+          example: 32
+    WaterPhReading:
+      required:
+        - SwimminPool_id
+        - Device_id
+        - Water_ph
+        - timestamp
+      properties:
+        SwimminPool_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0852
+        Device_id:
+          type: string
+          example: device2
+        Water_ph:
+          type: number
+          example: 7
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'

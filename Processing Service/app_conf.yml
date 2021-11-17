@@ -1,0 +1,10 @@
+version: 1
+datastore:
+  filename: data.json
+scheduler:
+  period_sec: 5
+water_temperature:
+  url: http://localhost:8090/readings/water_temperature
+water_ph:
+  url: http://localhost:8090/readings/water_ph
+

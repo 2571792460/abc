@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  description: This API provide event stats
+  version: "1.0.0"
+  title: stats API
+  contact:
+    email: abc@swiming.com
+tags:
+  - name: sensors
+    description: Operations available to weather sensors
+paths:   
+    /stats:
+      get:
+        summary: get event status
+        operationId: app.get_stats
+        description: Get water temperature and ph value processed statistic
+        responses:
+          '200':
+            description: Return a project sucessfully
+            content:
+              application/json:
+                schema:
+                  type: object
+                  items:
+                    $ref: '#/components/schemas/ReadingStats'
+          '400':
+            description: Invalid request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+
+components:
+  schemas:
+    ReadingStats:
+      required:
+        - num_wt_readings
+        - max_wt_reading
+        - num_pv_readings
+        - max_pv_reading
+      properties:
+        num_wt_readings:
+          type: integer
+          example: 50
+        max_wt_reading:
+          type: integer
+          example: 36
+        num_pv_readings:
+          type: integer
+          example: 60
+        max_pv_reading:
+          type: integer
+          example: 14
+      type: object
+
+      
