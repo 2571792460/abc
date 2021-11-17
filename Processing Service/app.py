@@ -7,6 +7,7 @@ import connexion
 import requests
 import yaml
 from apscheduler.schedulers.background import BackgroundScheduler
+from flask_cors import CORS, cross_origin
 
 with open('app_conf.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -75,7 +76,8 @@ app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("open.yml",
             strict_validation=True,
             validate_responses=True)
-
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 if __name__ == "__main__":# run our standalone gevent server#
     init_scheduler()
     app.run(port=8100, use_reloader=False)

@@ -4,7 +4,7 @@ from pykafka import KafkaClient
 import logging, logging.config
 import yaml
 import connexion
-
+from flask_cors import CORS, cross_origin
 
 with open("app_conf.yml", "r") as f:
     app_config = yaml.safe_load(f.read())
@@ -64,6 +64,7 @@ def get_water_ph_reading(index):
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
-
+CORS(app.app)
+app.app.config['CORS_HEADERS'] = 'Content-Type'
 if __name__ == "__main__":
     app.run(port=8110)
