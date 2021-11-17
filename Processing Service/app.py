@@ -25,8 +25,18 @@ def get_stats():
             logger.info('Request has ended')
             return json.load(f), 200
     else:
+        with open(data_file, 'w') as json_file :
+            temp = json.dumps({
+                "num_wt_readings": 0,
+            "max_wt_reading": 0,
+            "num_pv_readings": 0,
+            "max_pv_reading": 0,
+            "last_updated": '2019-04-25T10:12:23Z'
+            })
+            json_file.write(temp)
+        
         logger.error('file does not exist')
-        msg = 'file does not exist'
+        msg = 'file does not exist create one'
         return msg, 404
 def populate_stats():
     """ Periodically update stats """
