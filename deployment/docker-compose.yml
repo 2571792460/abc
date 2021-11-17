@@ -7,7 +7,6 @@ services:
     hostname: zookeeper
     volumes:
       -/home/azureuser/zookeeper/data:/opt/zookeeper-3.4.13/data
-
   kafka:
     image: wurstmeister/kafka
     command: [start-kafka.sh]
