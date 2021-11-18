@@ -6,7 +6,7 @@ from pykafka import KafkaClient
 import datetime
 import json
 import logging, logging.config
-
+import time
 HEADERS = {"content-type": "application/json"}
 
 with open("app_conf.yml", "r") as f:
@@ -17,6 +17,20 @@ with open("log_conf.yml", "r") as f:
     logging.config.dictConfig(log_config)
     logger = logging.getLogger("basicLogger")
 
+
+timestried = app_config["Hi"]["timestried"]
+maxtired = app_config["Hi"]["maxtired"]
+while timestried < maxtired:
+    logger.info("Connecting to Kafka. It's time" + str(timestried) + ".")
+    try:
+        client = KafkaClient(hosts='oooooliversi.eastus.cloudapp.azure.com:9092')
+        topic = client.topics[str.encode(app_config["events"]["topic"])]
+        break
+    except:
+        logger.info("Connection failed.")
+        time.sleep(app_config["Hi"]["sleep"])
+        timestried = timestried + 1
+
 def report_ph_value_reading(body):
     # logger.info("Received event %s request with a unique id of %s"
     #             % ("ph value", body["SwimminPool_id"]))
@@ -26,8 +40,8 @@ def report_ph_value_reading(body):
     # logger.info("Returned event %s response %s with status %s"
     #             % ("ph value", body["SwimminPool_id"], response.status_code))
     # return NoContent, response.status_code
-    client = KafkaClient(hosts='oooooliversi.eastus.cloudapp.azure.com:9092')
-    topic = client.topics[str.encode("events")]
+
+    
     producer = topic.get_sync_producer()
 
     msg = {"type": "pv", "datetime": datetime.datetime.now().strftime(
@@ -46,6 +60,7 @@ def report_water_temperature_reading(body):
     #
     # return NoContent, response.status_code
     client = KafkaClient(hosts='oooooliversi.eastus.cloudapp.azure.com:9092')
+
     topic = client.topics[str.encode("events")]
     producer = topic.get_sync_producer()
 
