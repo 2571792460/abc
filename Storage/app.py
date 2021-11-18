@@ -47,7 +47,7 @@ DB_SESSION = sessionmaker(bind=DB_ENGINE)
 def get_report_ph_value_readings(timestamp, end_timestamp):
     session = DB_SESSION()
     timestamp_datetime = datetime.datetime.strptime(timestamp ,"%Y-%m-%dT%H:%M:%SZ" )
-    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     # readings = session.query(PhValue).filter(PhValue.date_created >= timestamp_datetime)
     readings = session.query(PhValue).filter(
         and_(PhValue.date_created >= timestamp_datetime,
@@ -62,7 +62,7 @@ def get_report_ph_value_readings(timestamp, end_timestamp):
 def get_water_temperature_readings(timestamp, end_timestamp):
     session = DB_SESSION()
     timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
-    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     readings = session.query(WaterTemperature).filter(
         and_(WaterTemperature.date_created >= timestamp_datetime,
             WaterTemperature.date_created < end_timestamp_datetime))
