@@ -13,6 +13,7 @@ from  pykafka.common import OffsetType
 from threading import Thread
 from sqlalchemy import and_
 import yaml
+import time
 with open("app_conf.yml", "r") as f:
     app_config = yaml.safe_load(f.read())
     db_info = app_config["db"]
@@ -95,6 +96,18 @@ def process_messages():
     """ Process event messages """
     hostname = "%s:%d" % (app_config["events"]["hostname"], app_config["events"]["port"])
     client = KafkaClient(hosts=hostname)
+    timestried = app.config["Hi"]["timestried"]
+    maxtired = app.config["Hi"]["maxtired"]
+    while timestried < maxtired:
+        logger.info("Connecting to Kafka. It's time" + str(timestried) + ".")
+        try:
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+        except:
+            logger.info("Connection failed.")
+            time.sleep(app_config["Hi"]["sleep"])
+            timestried = timestried + 1
+            
     topic = client.topics[str.encode(app_config["events"]["topic"])]
     # Create a consume on a consumer group, that only reads new messages
     # (uncommitted messages) when the service re-starts (i.e., it doesn't
