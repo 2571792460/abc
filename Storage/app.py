@@ -101,7 +101,7 @@ def process_messages():
     while timestried < maxtired:
         logger.info("Connecting to Kafka. It's time" + str(timestried) + ".")
         try:
-            # client = KafkaClient(hosts=hostname)
+            client = KafkaClient(hosts=hostname)
             topic = client.topics[str.encode(app_config["events"]["topic"])]
             break
         except:
