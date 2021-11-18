@@ -45,8 +45,10 @@ def populate_stats():
     with open(data_file, "r") as f:
         last_update = json.load(f)["last_updated"]
 
-    response_water_temperature = requests.get(app_config["water_temperature"]["url"], params={'timestamp': last_update})
-    response_ph_value = requests.get(app_config["water_ph"]["url"], params={'timestamp': last_update})
+    # response_water_temperature = requests.get(app_config["water_temperature"]["url"] , params={'timestamp': last_update} )
+    # response_ph_value = requests.get(app_config["water_ph"]["url"], params={'timestamp': last_update})
+    response_water_temperature = requests.get(app_config["water_temperature"]["url"] + "?timestamp=" + last_update + "&end_timestamp=" + current_time)
+    response_ph_value = requests.get(app_config["water_ph"]["url"] + "?timestamp=" + last_update + "&end_timestamp=" + current_time)
 
     if len(response_water_temperature.json()) != 0 and len(response_ph_value.json()) != 0:
         temp_list = []

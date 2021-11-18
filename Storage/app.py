@@ -11,6 +11,7 @@ import json
 from pykafka import KafkaClient
 from  pykafka.common import OffsetType
 from threading import Thread
+from sqlalchemy import and_
 import yaml
 with open("app_conf.yml", "r") as f:
     app_config = yaml.safe_load(f.read())
@@ -43,10 +44,14 @@ DB_SESSION = sessionmaker(bind=DB_ENGINE)
 #     logger.info("Connecting to DB. Hostname:oliversilab6.eastus.cloudapp.azure.com, Port:3306")
 #
 #     return NoContent, 201
-def get_report_ph_value_readings(timestamp):
+def get_report_ph_value_readings(timestamp, end_timestamp):
     session = DB_SESSION()
     timestamp_datetime = datetime.datetime.strptime(timestamp ,"%Y-%m-%dT%H:%M:%SZ" )
-    readings = session.query(PhValue).filter(PhValue.date_created >= timestamp_datetime)
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
+    # readings = session.query(PhValue).filter(PhValue.date_created >= timestamp_datetime)
+    readings = session.query(PhValue).filter(
+        and_(PhValue.date_created >= timestamp_datetime,
+            PhValue.date_created < end_timestamp_datetime))
     results_list = []
     for reading in readings:
         results_list.append(reading.to_dict())
@@ -54,10 +59,13 @@ def get_report_ph_value_readings(timestamp):
     logger.info("Query for ph value readings after %s returns %d results" % (timestamp, len(results_list)))
     return results_list, 200
 
-def get_water_temperature_readings(timestamp):
+def get_water_temperature_readings(timestamp, end_timestamp):
     session = DB_SESSION()
     timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
-    readings = session.query(WaterTemperature).filter(WaterTemperature.date_created >= timestamp_datetime)
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%S")
+    readings = session.query(WaterTemperature).filter(
+        and_(WaterTemperature.date_created >= timestamp_datetime,
+            WaterTemperature.date_created < end_timestamp_datetime))
     results_list = []
     for reading in readings:
         results_list.append(reading.to_dict())

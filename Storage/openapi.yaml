@@ -43,6 +43,13 @@ paths:
             type: string
             format: date-time
             example: 2016-08-29T09:12:33Z
+        - name: end_timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-01-29T09:12:33Z
       responses:
         '200':
           description: Return a project sucessfully
@@ -94,6 +101,13 @@ paths:
             type: string
             format: date-time
             example: 2016-08-29T09:12:33Z
+        - name: end_timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-11-29T09:12:33Z
       responses:
         '200':
           description: Return a reading sucessfully
