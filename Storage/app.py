@@ -95,13 +95,13 @@ def get_water_temperature_readings(timestamp, end_timestamp):
 def process_messages():
     """ Process event messages """
     hostname = "%s:%d" % (app_config["events"]["hostname"], app_config["events"]["port"])
-    # client = KafkaClient(hosts=hostname)
+    client = KafkaClient(hosts=hostname)
     timestried = app_config["Hi"]["timestried"]
     maxtired = app_config["Hi"]["maxtired"]
     while timestried < maxtired:
         logger.info("Connecting to Kafka. It's time" + str(timestried) + ".")
         try:
-            client = KafkaClient(hosts=hostname)
+            # client = KafkaClient(hosts=hostname)
             topic = client.topics[str.encode(app_config["events"]["topic"])]
             break
         except:
