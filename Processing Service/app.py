@@ -51,20 +51,19 @@ def get_stats():
         msg = 'file does not exist create one'
         return msg, 404
 
-# with open(data_file, "r") as f:
-#     json_file = json.load(f)
-#     last_update = json_file["last_updated"]
-#     num_wt_readings_old = json_file["num_wt_readings"]
-#     num_pv_readings_old = json_file["num_pv_readings"]
-#     max_wt_reading_old = json_file["max_wt_reading"]
-#     max_pv_reading_old = json_file["max_pv_reading"]
+with open(data_file, "r") as f:
+    json_file = json.load(f)
+    last_update = json_file["last_updated"]
+    num_wt_readings_old = json_file["num_wt_readings"]
+    num_pv_readings_old = json_file["num_pv_readings"]
+    max_wt_reading_old = json_file["max_wt_reading"]
+    max_pv_reading_old = json_file["max_pv_reading"]
 
 def populate_stats():
     """ Periodically update stats """
     logger.info(f"Start Periodic Processing")
     current_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
-    with open(data_file, "r") as f:
-        last_update = json.load(f)["last_updated"]
+
 
     # response_water_temperature = requests.get(app_config["water_temperature"]["url"] , params={'timestamp': last_update} )
     # response_ph_value = requests.get(app_config["water_ph"]["url"], params={'timestamp': last_update})
@@ -94,7 +93,7 @@ def populate_stats():
             "last_updated": current_time
         })
 
-        with open('data.json', 'w') as f:
+        with open(data_file, 'w') as f:
             f.write(data)
 
         logger.debug(data)
