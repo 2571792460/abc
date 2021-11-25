@@ -51,13 +51,13 @@ def get_stats():
         msg = 'file does not exist create one'
         return msg, 404
 
-with open(data_file, "r") as f:
-    json_file = json.load(f)
-    last_update = json_file["last_updated"]
-    num_wt_readings_old = json_file["num_wt_readings"]
-    num_pv_readings_old = json_file["num_pv_readings"]
-    max_wt_reading_old = json_file["max_wt_reading"]
-    max_pv_reading_old = json_file["max_pv_reading"]
+# with open(data_file, "r") as f:
+#     json_file = json.load(f)
+#     last_update = json_file["last_updated"]
+#     num_wt_readings_old = json_file["num_wt_readings"]
+#     num_pv_readings_old = json_file["num_pv_readings"]
+#     max_wt_reading_old = json_file["max_wt_reading"]
+#     max_pv_reading_old = json_file["max_pv_reading"]
 
 def populate_stats():
     """ Periodically update stats """
