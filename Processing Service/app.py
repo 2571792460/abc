@@ -24,9 +24,9 @@ with open('app_conf.yml', 'r') as f:
 with open('log_conf.yml', 'r') as f:
     log_config = yaml.safe_load(f.read())
     logging.config.dictConfig(log_config)
-    logger = logging.getLogger('basicLogger')
-    logger.info("App Conf File: %s" % app_conf_file)
-    logger.info("Log Conf File: %s" % log_conf_file)
+logger = logging.getLogger('basicLogger')
+logger.info("App Conf File: %s" % app_conf_file)
+logger.info("Log Conf File: %s" % log_conf_file)
 
 def get_stats():
     logger.info('Get stats request started')
