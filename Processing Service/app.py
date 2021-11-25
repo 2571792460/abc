@@ -28,6 +28,14 @@ logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s" % app_conf_file)
 logger.info("Log Conf File: %s" % log_conf_file)
 
+with open(data_file, "r") as f:
+    json_file = json.load(f)
+    last_update = json_file["last_updated"]
+    num_wt_readings_old = json_file["num_wt_readings"]
+    num_pv_readings_old = json_file["num_pv_readings"]
+    max_wt_reading_old = json_file["max_wt_reading"]
+    max_pv_reading_old = json_file["max_pv_reading"]
+
 def get_stats():
     logger.info('Get stats request started')
     if os.path.isfile('data.json'):
@@ -64,15 +72,16 @@ def populate_stats():
         temp_list = []
         for tmd in response_water_temperature.json():
             temp_list.append(tmd['Water_temperature'])
-
+        temp_list.append(max_wt_reading_old)
         max_wt_reading = max(temp_list)
-        num_wt_readings = len(response_water_temperature.json())
+        num_wt_readings = len(response_water_temperature.json()) + num_wt_readings_old
 
         ph_value_list = []
         for ph_value in response_ph_value.json():
             ph_value_list.append(ph_value['Water_ph'])
+        ph_value_list.append(max_pv_reading_old)
         max_pv_reading = max(ph_value_list)
-        num_pv_readings = len(response_ph_value.json())
+        num_pv_readings = len(response_ph_value.json()) + num_pv_readings_old
 
         data = json.dumps({
             "num_wt_readings": num_wt_readings,
