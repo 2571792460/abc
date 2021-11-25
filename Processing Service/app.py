@@ -28,13 +28,6 @@ logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s" % app_conf_file)
 logger.info("Log Conf File: %s" % log_conf_file)
 
-with open(data_file, "r") as f:
-    json_file = json.load(f)
-    last_update = json_file["last_updated"]
-    num_wt_readings_old = json_file["num_wt_readings"]
-    num_pv_readings_old = json_file["num_pv_readings"]
-    max_wt_reading_old = json_file["max_wt_reading"]
-    max_pv_reading_old = json_file["max_pv_reading"]
 
 def get_stats():
     logger.info('Get stats request started')
@@ -56,6 +49,15 @@ def get_stats():
         logger.error('file does not exist')
         msg = 'file does not exist create one'
         return msg, 404
+
+with open(data_file, "r") as f:
+    json_file = json.load(f)
+    last_update = json_file["last_updated"]
+    num_wt_readings_old = json_file["num_wt_readings"]
+    num_pv_readings_old = json_file["num_pv_readings"]
+    max_wt_reading_old = json_file["max_wt_reading"]
+    max_pv_reading_old = json_file["max_pv_reading"]
+
 def populate_stats():
     """ Periodically update stats """
     logger.info(f"Start Periodic Processing")
